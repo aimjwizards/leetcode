@@ -13,7 +13,7 @@
         while(*str=='0') {str++;}
         while(isdigit(*str)) {
             int n = str[0]-'0';
-            long k=((long)result)*10+n;
+            int64_t k=((int64_t)result)*10+n;
             if(k>=INT_MAX) {
                 if(pos==1) return INT_MAX;
                 else {
