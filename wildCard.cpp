@@ -25,6 +25,12 @@ public:
         const char *star = nullptr;
         while(*s) {
             if((*p=='?')||(*s==*p)) { s++; p++; continue;}
+
+						// when you have a * card, save/mark the star ptr
+						// continue processing the string s without using * card
+						// if the match was unsuccessfuly, we backup, and use the * card
+						// to match one character of string s (marked by ss)
+						// continue matching p=start+1 with s=++ss; and such
             if(*p=='*') {  star =p++; ss = s; continue;}
             if(star){ p = star+1; s = ++ss; continue;}
             return false;
