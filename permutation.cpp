@@ -1,21 +1,18 @@
-vector<vector<int> > permute(vector<int> &num)
-{
-    vector<vector<int>> result;
-    if (num.size()==1) {
-        result.push_back(num);
-        return result;
-    }
-
-    
-    for (int i=0; i<num.size(); i++) {
-        swap(num[0], num[i]);
-        vector<int> subnum(num.begin()+1, num.end());
-        vector<vector<int>> subresult = permute(subnum);
-        for (auto &av: subresult) {
-            av.insert(av.begin(), num[0]);
-            result.push_back(av);
+    void helper(vector<int> &num, vector<vector<int>>&results, int start) {
+        if(start==num.size()) {
+            results.push_back(num);
+            return;
         }
-        swap(num[0], num[i]);
+        for(int i=start; i<num.size(); i++) {
+            swap(num[start], num[i]);
+            helper(num, results, start+1);
+            swap(num[start], num[i]);
+        }
+        
     }
-    return result;
-}
+    vector<vector<int> > permute(vector<int> &num) {
+        vector<vector<int>> results;
+        if(num.size()==0) return results;
+        helper(num, results, 0);
+        return results;
+    }
