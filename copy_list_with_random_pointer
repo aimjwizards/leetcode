@@ -1,0 +1,49 @@
+    RandomListNode *copyRandomList(RandomListNode *head) {
+        // write your code here
+        //first round copy the node and insert to original list
+        //second round copy random pointer
+        //third round, extract the copied linked list
+        if(head==nullptr) return head;
+        // When adding a new node behind current node, I'm modifying the next 
+        // field of my curret node.
+        // I need only need to make sure the current node is valid
+        RandomListNode *curr = head;
+        while(curr!=nullptr) {
+            RandomListNode *copy = new RandomListNode(curr->label);
+            copy->next = curr->next;
+            curr->next = copy;
+            curr = copy->next;
+        }
+
+        // adding a copy's random pointer needs to verify the copy is a valid pointer
+        // However because a copy and its original appear together, we again only need to check the current node is valid.
+        curr = head;
+        while(curr!=nullptr){
+            if(curr->random!=nullptr) {
+                curr->next->random = curr->random->next;
+            } else {
+                curr->next->random = nullptr;
+            }
+            curr= curr->next->next;
+        }
+
+        // When spliting two interweaving linked list, looking at current pair of original and copy, we will need to modify previous node pairs' next
+        // As a result, adding a dummy node to keep the "initialized valid prev"
+        // pointer is important.
+        RandomListNode *dummy1 = new RandomListNode(0);
+        RandomListNode *dummy2 = new RandomListNode(0);
+        RandomListNode *prev1 = dummy1;
+        RandomListNode *prev2 = dummy2;
+        RandomListNode *curr1 = nullptr;
+        RandomListNode *curr2 = nullptr;
+        curr1 = head;
+        while(curr1!=nullptr) {
+            curr2 = curr1->next;
+            prev1->next = curr1;
+            prev2->next = curr2;
+            curr1 = curr1->next->next;
+            prev1 = prev1->next;
+            prev2 = prev2->next;
+        }
+        return dummy2->next;
+       }
