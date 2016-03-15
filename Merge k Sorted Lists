@@ -1,0 +1,23 @@
+    ListNode *mergeKLists(vector<ListNode *> &lists) {
+        auto cmp = [](ListNode *a, ListNode *b) {return a->val > b->val;};
+        priority_queue<ListNode*, std::vector<ListNode*>, decltype(cmp)> q(cmp);
+        for(auto list: lists) {
+            if(list!=nullptr) {
+                q.push(list);
+            }
+        }
+        ListNode *dummy = new ListNode (INT_MIN);
+        ListNode *prev = dummy;
+        while(!q.empty()) {
+            ListNode *temp = q.top();
+            q.pop();
+            if(temp->next!=nullptr) {
+                q.push(temp->next);
+            }
+            prev->next = temp;
+            temp->next = nullptr;
+            prev = temp;
+        }
+        
+        return dummy->next;
+        }
