@@ -1,0 +1,38 @@
+    struct Node{
+        int sum;
+        int index;
+        Node(int s, int i) {
+            sum = s;
+            index = i;
+        }
+    };
+    vector<int> subarraySumClosest(vector<int> nums){
+        // write your code here
+        vector<Node> prefix_sum;
+        int sum = 0;
+        Node n = Node(0, 0);
+
+        for(int i=0; i<nums.size(); i++) {
+            sum+=nums[i];
+            Node n = Node(sum, i+1);
+            prefix_sum.push_back(n);
+        }
+        auto cmp = [](Node a, Node b){ return a.sum<b.sum;};
+        std::sort(prefix_sum.begin(), prefix_sum.end(), cmp);        
+        vector<int> index {0, 0};
+        int closest = INT_MAX;
+        for(int i=1; i<prefix_sum.size(); i++) {
+            if(abs(closest) > abs(prefix_sum[i].sum - prefix_sum[i-1].sum)) {
+                if(prefix_sum[i].index < prefix_sum[i-1].index) {
+                    index[0] = prefix_sum[i].index;
+                    index[1] = prefix_sum[i-1].index-1;
+                }else{
+                    index[0] = prefix_sum[i-1].index;
+                    index[1] = prefix_sum[i].index-1;
+                }
+                closest = prefix_sum[i].sum - prefix_sum[i-1].sum;
+            }
+        }
+
+        return index;
+    }
