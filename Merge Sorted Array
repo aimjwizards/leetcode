@@ -1,0 +1,22 @@
+    void mergeSortedArray(int A[], int m, int B[], int n) {
+        // write your code here
+        int i=m-1, j=n-1;
+        for(; i>=0&&j>=0;) {
+            if(A[i]>B[j]) {
+                A[i+j+1] = A[i]; i--;
+            }else{
+                A[i+j+1] = B[j]; j--;
+            }
+        }
+        // only need to take care of the case that A is finished but B is not
+        // The other case is natually done.
+        // [1,2,3, , ]
+        // [4,5] is naturally finished by the first for loop
+        // [4,5, , , ]
+        // [1,2,3] needs to move B->A
+        if(i<0) {
+            for( ; j>=0; j--) {
+                A[j] = B[j];
+            }
+        }
+    }
