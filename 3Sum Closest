@@ -1,0 +1,25 @@
+    int threeSumClosest(vector<int> nums, int target) {
+        // write your code here
+        std::sort(nums.begin(), nums.end());
+        int closest = INT_MAX;
+        for(int i=0; i<nums.size()-2; i++) {
+            int a = nums[i];
+            int new_target = target - a;
+            int sum = INT_MAX;
+            for(int j=i+1, k=nums.size()-1; j<k; ) {
+                int sum1 = nums[j]+nums[k];
+                if(sum1==new_target) {
+                    return target;
+                }else if(sum1>new_target) {
+                    k--;
+                }else{
+                    j++;
+                }
+                sum = min(sum1, sum);
+                if(abs(a+sum1-target)<abs(closest-target)) {
+                    closest = a + sum1;
+                }
+            }
+        }
+        return closest;
+    }
