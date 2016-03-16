@@ -1,0 +1,13 @@
+    int partitionArray(vector<int> &nums, int k) {
+        // write your code here
+        if(nums.empty()) return 0;
+        int i=-1; int j=0;
+        while(j<nums.size()) {
+            if(nums[j]<k) {
+                i++;
+                swap(nums[i], nums[j]);
+            }
+            j++;
+        }
+        return i+1;
+    }
