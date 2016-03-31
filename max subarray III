@@ -1,0 +1,24 @@
+    int maxSubArray(vector<int> nums, int k) {
+        // write your code here
+        int n = nums.size();
+        // local optimal 
+        // f[i][j]: i partition, including the first j elements
+        // aka, ending at j-1 elements. the last partition ends at j-1
+        vector<vector<int>> f(k+1, vector<int>(n+1, 0) );
+        // g[i][j]: i partition, including the first j elements
+        // the last partition (i-1)th, doesn't have to include element at j-1
+        vector<vector<int>> g(k+1, vector<int>(n+1, 0) );
+        
+        for(int i=1; i<=k; i++) {
+            // i partition, i elements, each element is one partition
+            f[i][i] = f[i-1][i-1] + nums[i-1];
+            g[i][i] = f[i][i];
+            for(int j=i+1; j<=n; j++) {
+                // f[i][j-1] + nums[j-1] means extend the last partition with j-1 th element
+                // g[i-1][j-1] + nums[j-1] means j-1 th element is the ith partition
+                f[i][j] = max(f[i][j-1], g[i-1][j-1]) + nums[j-1];
+                g[i][j] = max(g[i][j-1], f[i][j]);
+            }
+        }
+        return g[k][n];
+    }
